@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load custom_filters %}
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+</head>
+<style>
+    .checkout-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.checkout-button:hover {
+    background-color: #0056b3;
+}
+</style>
+<body>
+    <section id="cart" class="section-p1">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>Remove</td>
+                    <td>Product</td>
+                    <td>Price</td>
+                    <td>Quantity</td>
+                    <td>Subtotal</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cart_item in cart_items %}
+                    <tr>
+                        <td><a href="{% url 'remove_from_cart' cart_item.id %}"> <i class="far fa-times-circle"></i></a></td>
+                        <td><img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}"></td>
+                        <td>{{ cart_item.product.name }}</td>
+                        <td>${{ cart_item.product.price|floatformat:2 }}</td>
+                        <td>{{ cart_item.quantity }}</td>
+                        <td>${{ cart_item.product.price|floatformat:2|multiply:cart_item.quantity }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section id="cart-add" class="section-p1">
+        <div id="coupon">
+            <h3>Apply Coupon</h3>
+            <div>
+                <input type="text" placeholder="Enter Your Coupon">
+                <button class="normal">Apply</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="subtotal">
+        <h3>Cart Totals</h3>
+        <table>
+            <tr>
+                <td>Cart Subtotal</td>
+                <td>${{ cart_items|multiply_total }}</td>
+            </tr>
+            <tr>
+                <td>Shipping</td>
+                <td>Free</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>${{ cart_items|multiply_total }}</strong></td>
+            </tr>
+        </table>
+        <a href="{% url 'proceed_to_checkout' %}" class="checkout-button">Proceed To Checkout</a>
+    </div>
+</body>
+</html>

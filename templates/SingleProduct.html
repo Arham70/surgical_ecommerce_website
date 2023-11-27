@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+    <title>{{ product.name }}</title>
+</head>
+<body>
+    <div class="single-pro-image">
+        <img src="{{ product.image.url }}" width="100%" id="MainImg" alt="{{ product.name }}">
+    </div>
+    <div class="single-pro-details">
+        <h6>{{ product.brand }}</h6>
+        <h4>{{ product.name }}</h4>
+        <h2>${{ product.price }}</h2>
+        <form id="add-to-cart-form" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">
+            <label for="size">Select Size:</label>
+            <select id="size" name="size">
+                <option>Select Size</option>
+                {% for size in sizes %}
+                    <option>{{ size.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" value="1" id="quantity" name="quantity">
+            <button type="button" class="add-to-cart-btn normal">Add To Cart</button>
+        </form>
+        <h4>Product Details</h4>
+        <span>{{ product.description }}</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var addToCartButton = document.querySelector('.add-to-cart-btn');
+            addToCartButton.addEventListener('click', function() {
+                var productId = addToCartButton.closest('form').getAttribute('data-product-id');
+                var productName = addToCartButton.closest('form').getAttribute('data-product-name');
+                var productPrice = addToCartButton.closest('form').getAttribute('data-product-price');
+                var selectedSize = document.getElementById('size').value;
+                var quantity = document.getElementById('quantity').value;
+
+                fetch(`/add_to_cart/${productId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify({
+                        size: selectedSize,
+                        quantity: quantity,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`${productName} added to cart`);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+            function getCookie(name) {
+                var value = "; " + document.cookie;
+                var parts = value.split("; " + name + "=");
+                if (parts.length == 2) return parts.pop().split(";").shift();
+            }
+        });
+    </script>
+</body>
+</html>

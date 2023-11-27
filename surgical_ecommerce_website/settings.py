@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'product',
-    'payment',
+    'Payment',
 ]
 
 MIDDLEWARE = [
@@ -119,15 +119,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    "/var/www/static/",
 ]
 
-STATIC_ROOT = "/var/www/example.com/static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authentication.CustomUser'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51OFGO7SJB5YS4H7Os5tm1xcEqYK9NBoIErJ1Ycl0ITOVnpybXxZU48Auk6WhKJTtiFG8453NsZ63Y255q7mJPj3500Qom91sfg'
+STRIPE_SECRET_KEY = 'sk_test_51OFGO7SJB5YS4H7OfA4yf3XoIh1vxPj5zmjq5xMTwny2pjsBRF95AFPVyHxKjtTt3DsPCy1JaK1mDNaCep7ohPbf00hul0RCdi'

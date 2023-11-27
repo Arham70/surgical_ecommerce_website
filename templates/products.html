@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+    <title>Surgical Website</title>
+</head>
+<body>
+ <section id="header">
+        <a href="#"> <img src="img/logo.png" class="logo" alt="h"></a>
+        <div>
+            <ul id="navbar">
+                <li><a class="active" href="index.html">Home</a></li>
+                <li><a href="contact.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+     </section>
+
+    <section id="hero">
+        <h4>Trade-in-offer</h4>
+        <h2>Super value deals</h2>
+        <h1>On all products</h1>
+        <p>Save more with coupons & up to 70% off!</p>
+        <button>Shop Now</button>
+    </section>
+    <h2>Featured Products</h2>
+    <div class="pro-container">
+        {% for product in products %}
+            <div class="pro">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div class="des">
+                    <span>{{ product.brand }}</span>
+                    <h5>{{ product.name }}</h5>
+                    <div class="star">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>${{ product.price }}</h4>
+                </div>
+                <button class="add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add to Cart</button>
+            </div>
+        {% endfor %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var addToCartButtons = document.querySelectorAll('.add-to-cart');
+                addToCartButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var productId = button.getAttribute('data-product-id');
+                        var productName = button.getAttribute('data-product-name');
+                        var productPrice = button.getAttribute('data-product-price');
+
+                        fetch(`/add_to_cart/${productId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken'),
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(`${productName} added to cart`);
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                });
+
+                function getCookie(name) {
+                    var value = "; " + document.cookie;
+                    var parts = value.split("; " + name + "=");
+                    if (parts.length == 2) return parts.pop().split(";").shift();
+                }
+            });
+        </script>
+    </body>
+</html>

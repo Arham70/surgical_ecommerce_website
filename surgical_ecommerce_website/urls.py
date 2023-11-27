@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
 from authentication import views
 from surgical_ecommerce_website import settings
 
@@ -24,5 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', views.SignUpPage, name='signup'),
     path('login/', views.LoginPage, name='login'),
+    path('profile_setup/', views.profile_setup, name='profile_setup'),
+    path('', include('product.urls')),
+    path('', include('Payment.urls')),
 ]
-static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

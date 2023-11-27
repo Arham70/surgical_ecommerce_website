@@ -1,0 +1,45 @@
+<!-- checkout.html -->
+<html lang="en">
+<head>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <form action="{% url 'stripe_payment' %}" method="post" id="payment-form">
+        {% csrf_token %}
+        <div id="card-element"></div>
+        <button id="submit">Pay now</button>
+        <p id="card-error" role="alert"></p>
+    </form>
+    <script>
+        var stripe = Stripe('your_stripe_public_key');  // Replace with your actual public key
+        var elements = stripe.elements();
+        var card = elements.create('card');
+        var clientSecret = '{{ client_secret }}';  // Pass the client secret from the server
+
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card,
+                },
+            }).then(function (result) {
+                if (result.error) {
+                    // Display error to your user
+                    var errorElement = document.getElementById('card-error');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Payment succeeded
+                    if (result.paymentIntent.status === 'succeeded') {
+                        // Handle the success, e.g., redirect to a success page
+                        window.location.href = '/success/';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

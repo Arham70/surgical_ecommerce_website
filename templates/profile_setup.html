@@ -1,0 +1,7 @@
+<!-- profile_setup.html -->
+
+<form method="post" action="{% url 'profile_setup' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Profile</button>
+</form>

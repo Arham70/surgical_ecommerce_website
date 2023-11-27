@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
+from .form import ProfileSetupForm
 from .models import CustomUser
 
 
@@ -26,33 +28,6 @@ def SignUpPage(request):
     return render(request, 'signup.html')
 
 
-def ProfileSetup(request, user_id):
-    # Retrieve the user object
-    user = CustomUser.objects.get(id=user_id)
-
-    if request.method == 'POST':
-        # Get additional attributes from the form
-        firstname = request.POST.get('firstname')
-        lastname = request.POST.get('lastname')
-        address = request.POST.get('address')
-        postal_code = request.POST.get('postal_code')
-        country = request.POST.get('country')
-        telephone = request.POST.get('telephone')
-
-        # Update the user with additional attributes
-        user.firstname = firstname
-        user.lastname = lastname
-        user.address = address
-        user.postal_code = postal_code
-        user.country = country
-        user.telephone = telephone
-        user.save()
-
-        return redirect('login')  # Redirect to login or another page
-
-    return render(request, 'profile_setup.html', {'user': user})
-
-
 def LoginPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -66,6 +41,20 @@ def LoginPage(request):
             return HttpResponse("Username or Password is incorrect!!")
 
     return render(request, 'login.html')
+
+
+@login_required
+def profile_setup(request):
+    user = request.user  # This gets the currently logged-in user
+    if request.method == 'POST':
+        form = ProfileSetupForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('proceed_to_checkout')  # Redirect to the checkout page after profile setup
+    else:
+        form = ProfileSetupForm(instance=user)
+
+    return render(request, 'profile_setup.html', {'form': form})
 
 
 @login_required
