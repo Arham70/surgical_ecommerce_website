@@ -13,3 +13,8 @@ def multiply(value, arg):
 def multiply_total(cart_items):
     total = sum(item.product.price * item.quantity for item in cart_items)
     return f'{total:.2f}'
+
+
+@register.filter
+def calculate_subtotal(cart_item):
+    return cart_item.product.price * cart_item.quantity

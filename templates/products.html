@@ -4,29 +4,81 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+    <!-- Add this to the head section of your HTML -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <title>Surgical Website</title>
 </head>
 <body>
- <section id="header">
-        <a href="#"> <img src="img/logo.png" class="logo" alt="h"></a>
-        <div>
-            <ul id="navbar">
-                <li><a class="active" href="index.html">Home</a></li>
-                <li><a href="contact.html">Shop</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                <a href="#" id="close"><i class="far fa-times"></i></a>
-            </ul>
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/your_logo.png' %}" alt="Your Logo">
         </div>
-        <div id="mobile">
-            <i id="bar" class="fas fa-outdent"></i>
+        <div class="company-name">Surgical Instrument</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+            <button class="search-button">Search</button>
         </div>
-     </section>
+        <div class="user-actions">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">
+            <button class="logout-button">Logout</button>
+        </a>
+        <a href="{% url 'view_cart' %}">
+            <button class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">{{ cart_count }}</span>
+            </button>
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}">
+            <button class="login-button">Login</button>
+        </a>
+        <a href="{% url 'signup' %}">
+            <button class="register-button">Register</button>
+        </a>
+    {% endif %}
+    </div>
 
+    </header>
+      <nav class="navbar">
+          {% if user.is_authenticated %}
+            <ul class="nav-list">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'featured_products' %}">Featured Products</a></li>
+                <li><a href="{% url 'request_product_form' %}">Customer Request</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                <li><a href="{% url 'blog' %}">Blogs</a></li>
+                <li><a href="{% url 'charge' %}">Account Details</a></li>
+                <li><a href="{% url 'order_list' %}">My Order</a></li>
+                <li><a href="{% url 'featured_products' %}" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
+            </ul>
+            <div class="social-media-icons">
+                <a href="www.facebook.com" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+                <a href="www.instragram.com" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+                <a href="www.linkedin.com" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+                <a href="www.youtube.com" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+            </div>
+          {% else %}
+            <ul class="nav-list">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'featured_products' %}">Featured Products</a></li>
+                <li><a href="{% url 'request_product_form' %}">Customer Request</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                <li><a href="{% url 'blog' %}">Blogs</a></li>
+                <li><a href="{% url 'charge' %}">Account Details</a></li>
+                <li><a href="{% url 'featured_products' %}">All Products</a></li>
+            </ul>
+            <div class="social-media-icons">
+                <a href="www.facebook.com" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+                <a href="www.instragram.com" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+                <a href="www.linkedin.com" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+                <a href="www.youtube.com" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+            </div>
+          {% endif %}
+    </nav>
     <section id="hero">
         <h4>Trade-in-offer</h4>
         <h2>Super value deals</h2>
@@ -38,7 +90,9 @@
     <div class="pro-container">
         {% for product in products %}
             <div class="pro">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <a href="{% url 'product_detail' product_id=product.id %}">
+                <img src="/static/images/p.png" id="MainImg" alt="{{ product.name }}">
+                </a>
                 <div class="des">
                     <span>{{ product.brand }}</span>
                     <h5>{{ product.name }}</h5>
@@ -54,39 +108,132 @@
                 <button class="add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add to Cart</button>
             </div>
         {% endfor %}
+    </div>
+    <section id="banner" class="section-m1">
+        <h4>Repair Services</h4>
+        <h2>Up to <span>70% off</span> - All t-shirts & Accessories</h2>
+        <button class="normal">Explore More</button>
+    </section>
+
+    <section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your Email address">
+            <button class="normal">Sign Up</button>
+        </div>
+    </section>
+    <footer>
+    <div class="footer-row">
+        <div class="footer-column-1">
+            <h3>About Ali Surgical</h3>
+            <p>Ali Surgical is one of the Renowned, Privately Health Care Instrument Manufacturing Company in
+                Pakistan</p>
+            <div class="icon-row">
+                <img src="/static/images/fb.png" alt="Facebook">
+                <img src="/static/images/lk.png" alt="LinkedIn">
+                <img src="/static/images/em.png" alt="Email">
+                <img src="/static/images/yt.png" alt="Youtube">
+            </div>
+        </div>
+        <div class="footer-column-2">
+            <h3>About</h3>
+            <ul>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="dcma.html">DCMA</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-3">
+            <h3>Let Us Help You</h3>
+            <ul>
+                <li><a href="faqs.html">FAQS</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+                <li><a href="payment-methods.html">Payment Methods</a></li>
+                <li><a href="delivery-info.html">Delivery Information</a></li>
+                <li><a href="return-policy.html">Return and Refund Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-4">
+            <h3>Customer Care</h3>
+            <ul>
+                <li><a href="my-accounts.html">My Accounts</a></li>
+                <li><a href="addresses.html">Addresses</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="track-order.html">Track Your Order</a></li>
+                <li><a href="lost-password.html">Lost Password</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="centered-div">
+        <img src="/static/images/p1.png" alt="Image">
+        <div class="anchor-div">
+            <a href="about_us.html">About Us</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+        </div>
+        <p>Copyright &copy; 2023 Ali Surgical. All Rights Reserved.</p>
+        <p>This site is also protected by reCAPTCHA and the Google Privacy Policy and the Terms of Service
+            Apply.</p>
+    </div>
+
+</footer>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var addToCartButtons = document.querySelectorAll('.add-to-cart');
-                addToCartButtons.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        var productId = button.getAttribute('data-product-id');
-                        var productName = button.getAttribute('data-product-name');
-                        var productPrice = button.getAttribute('data-product-price');
+    document.addEventListener('DOMContentLoaded', function () {
+        var addToCartButtons = document.querySelectorAll('.add-to-cart');
+        var cartCountElement = document.querySelector('.cart-count');
 
-                        fetch(`/add_to_cart/${productId}/`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': getCookie('csrftoken'),
-                            },
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert(`${productName} added to cart`);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                    });
-                });
+        // Set the initial cart count based on the value rendered in the HTML
+        var initialCartCount = parseInt(cartCountElement.textContent);
 
-                function getCookie(name) {
-                    var value = "; " + document.cookie;
-                    var parts = value.split("; " + name + "=");
-                    if (parts.length == 2) return parts.pop().split(";").shift();
-                }
+        addToCartButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var productId = button.getAttribute('data-product-id');
+                var productName = button.getAttribute('data-product-name');
+                var productPrice = button.getAttribute('data-product-price');
+
+                fetch(`/add_to_cart/${productId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(`${productName} added to cart`);
+                            // Update the cart count
+                            updateCartCount();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             });
-        </script>
+        });
+
+        function updateCartCount() {
+            // Fetch the updated cart count from the server
+            fetch('/get_cart_count/')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the cart count displayed in the span
+                    cartCountElement.textContent = initialCartCount + data.cart_count;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+    });
+</script>
     </body>
 </html>

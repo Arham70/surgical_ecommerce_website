@@ -45,3 +45,17 @@ class CustomUser(AbstractUser):
         blank=True,
         help_text='Specific permissions for this user.',
     )
+
+
+class RequestProductForm(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phoneNo = models.CharField(max_length=15)
+    address = models.TextField()
+    companyName = models.CharField(max_length=100)
+    productName = models.CharField(max_length=100)
+    detail = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.productName}"

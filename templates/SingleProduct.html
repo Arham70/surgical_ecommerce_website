@@ -4,13 +4,90 @@
    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
     <title>{{ product.name }}</title>
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/your_logo.png' %}" alt="Your Logo">
+        </div>
+        <div class="company-name">Surgical Instrument</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="user-actions">
+        {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">
+            <button class="logout-button">Logout</button>
+        </a>
+        <a href="{% url 'view_cart' %}">
+            <button class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </button>
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}">
+            <button class="login-button">Login</button>
+        </a>
+        <a href="{% url 'signup' %}">
+            <button class="register-button">Register</button>
+        </a>
+    {% endif %}
+    </div>
+
+    </header>
+      <nav class="navbar">
+          {% if user.is_authenticated %}
+            <ul class="nav-list">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'featured_products' %}">Featured Products</a></li>
+                <li><a href="{% url 'request_product_form' %}">Customer Request</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                <li><a href="{% url 'blog' %}">Blogs</a></li>
+                <li><a href="{% url 'charge' %}">Account Details</a></li>
+                <li><a href="{% url 'order_list' %}">My Order</a></li>
+                <li><a href="{% url 'featured_products' %}" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
+            </ul>
+            <div class="social-media-icons">
+                <a href="www.facebook.com" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+                <a href="www.instragram.com" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+                <a href="www.linkedin.com" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+                <a href="www.youtube.com" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+            </div>
+          {% else %}
+            <ul class="nav-list">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'featured_products' %}">Featured Products</a></li>
+                <li><a href="{% url 'request_product_form' %}">Customer Request</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                <li><a href="{% url 'blog' %}">Blogs</a></li>
+                <li><a href="{% url 'charge' %}">Account Details</a></li>
+                <li><a href="{% url 'featured_products' %}">All Products</a></li>
+            </ul>
+            <div class="social-media-icons">
+                <a href="www.facebook.com" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+                <a href="www.instragram.com" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+                <a href="www.linkedin.com" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+                <a href="www.youtube.com" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+            </div>
+          {% endif %}
+    </nav>
+    <section id="hero">
+        <h4>Trade-in-offer</h4>
+        <h2>Super value deals</h2>
+        <h1>On all products</h1>
+        <p>Save more with coupons & up to 70% off!</p>
+        <button>Shop Now</button>
+    </section>
+
+<div class="single">
+
     <div class="single-pro-image">
-        <img src="{{ product.image.url }}" width="100%" id="MainImg" alt="{{ product.name }}">
+        <img src="/static/images/p.png" alt="{{ product.name }}">
     </div>
     <div class="single-pro-details">
         <h6>{{ product.brand }}</h6>
@@ -25,48 +102,187 @@
                 {% endfor %}
             </select>
             <input type="number" value="1" id="quantity" name="quantity">
-            <button type="button" class="add-to-cart-btn normal">Add To Cart</button>
+            <button class="add-to-cart add1" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add To Cart</button>
         </form>
         <h4>Product Details</h4>
         <span>{{ product.description }}</span>
     </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var addToCartButton = document.querySelector('.add-to-cart-btn');
-            addToCartButton.addEventListener('click', function() {
-                var productId = addToCartButton.closest('form').getAttribute('data-product-id');
-                var productName = addToCartButton.closest('form').getAttribute('data-product-name');
-                var productPrice = addToCartButton.closest('form').getAttribute('data-product-price');
-                var selectedSize = document.getElementById('size').value;
-                var quantity = document.getElementById('quantity').value;
 
-                fetch(`/add_to_cart/${productId}/`, {
+<section id="newsletter" class="section-p1 section-m1">
+        <div class="newstext">
+            <h4>Sign Up for Newsletters</h4>
+            <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your Email address">
+            <button class="normal">Sign Up</button>
+        </div>
+    </section>
+<footer>
+<div class="footer-row">
+        <div class="footer-column-1">
+            <h3>About Ali Surgical</h3>
+            <p>Ali Surgical is one of the Renowned, Privately Health Care Instrument Manufacturing Company in
+                Pakistan</p>
+            <div class="icon-row">
+                <img src="/static/images/fb.png" alt="Facebook">
+                <img src="/static/images/lk.png" alt="LinkedIn">
+                <img src="/static/images/em.png" alt="Email">
+                <img src="/static/images/yt.png" alt="Youtube">
+            </div>
+        </div>
+        <div class="footer-column-2">
+            <h3>About</h3>
+            <ul>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="dcma.html">DCMA</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-3">
+            <h3>Let Us Help You</h3>
+            <ul>
+                <li><a href="faqs.html">FAQS</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+                <li><a href="payment-methods.html">Payment Methods</a></li>
+                <li><a href="delivery-info.html">Delivery Information</a></li>
+                <li><a href="return-policy.html">Return and Refund Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-4">
+            <h3>Customer Care</h3>
+            <ul>
+                <li><a href="my-accounts.html">My Accounts</a></li>
+                <li><a href="addresses.html">Addresses</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="track-order.html">Track Your Order</a></li>
+                <li><a href="lost-password.html">Lost Password</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="centered-div">
+        <img src="/static/images/p1.png" alt="Image">
+        <div class="anchor-div">
+            <a href="about_us.html">About Us</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+        </div>
+        <p>Copyright &copy; 2023 Ali Surgical. All Rights Reserved.</p>
+        <p>This site is also protected by reCAPTCHA and the Google Privacy Policy and the Terms of Service
+            Apply.</p>
+    </div>
+
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quantityInput = document.getElementById('quantity');
+        if (quantityInput) {
+            quantityInput.addEventListener('change', function() {
+                var selectedQuantity = this.value;
+                var cartElement = document.getElementById('cart');
+
+                if (cartElement) {
+                    cartElement.innerText = `Cart: ${selectedQuantity} item${selectedQuantity !== '1' ? 's' : ''}`;
+                }
+
+                recalculate_subtotal('{{ request.user.id }}', selectedQuantity);
+            });
+        }
+
+        var addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var productId = button.getAttribute('data-product-id');
+                var productName = button.getAttribute('data-product-name');
+                var productPrice = button.getAttribute('data-product-price');
+
+                // Get the selected quantity
+                var quantity = parseInt(document.getElementById('quantity').value);
+
+                fetch(`/add_to_cart/${productId}/?quantity=${quantity}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': getCookie('csrftoken'),
                     },
-                    body: JSON.stringify({
-                        size: selectedSize,
-                        quantity: quantity,
-                    }),
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         alert(`${productName} added to cart`);
+                        location.reload();
                     }
                 })
                 .catch(error => console.error('Error:', error));
             });
-
-            function getCookie(name) {
-                var value = "; " + document.cookie;
-                var parts = value.split("; " + name + "=");
-                if (parts.length == 2) return parts.pop().split(";").shift();
-            }
         });
-    </script>
+
+        function recalculate_subtotal(userId, quantity) {
+            var productPrice = parseFloat(document.querySelector('.single-pro-details h2').innerText.slice(1));
+            var calculatedSubtotal = quantity * productPrice;
+
+            var subtotalElement = document.getElementById('user-subtotal');
+
+            if (subtotalElement) {
+                subtotalElement.innerText = `Subtotal: $${calculatedSubtotal.toFixed(2)}`;
+            }
+        }
+
+        // Rest of your JavaScript code...
+
+        var deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var cartItemId = this.getAttribute('data-cart-item-id');
+
+                fetch(`/remove_from_cart/${cartItemId}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    var row = document.querySelector(`[data-cart-item-id="${cartItemId}"]`);
+                    if (row) {
+                        row.parentNode.removeChild(row);
+
+                        var tableBody = document.querySelector('#your-table-body-id');
+                        var rows = tableBody.querySelectorAll('tr');
+
+                        rows.forEach(function(row, index) {
+                            var newCartItemId = index + 1;
+                            row.querySelector('.delete-button').setAttribute('data-cart-item-id', newCartItemId);
+                        });
+
+                        recalculate_subtotal('{{ request.user.id }}');
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            });
+        });
+
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+    });
+</script>
+
 </body>
 </html>

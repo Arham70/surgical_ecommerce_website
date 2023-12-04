@@ -1,0 +1,113 @@
+<!-- thank_you.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-GLhlTQ8iZS+9L5ZDkCvbovH+3uYuaT6eVA6/5WEvwoK4Va+6E/hHTt8+pDDZP5Tb" crossorigin="anonymous">
+    <title>Thank You</title>
+</head>
+<body>
+     <header>
+        <div class="logo">
+            <img src="{% static 'images/your_logo.png' %}" alt="Your Logo">
+        </div>
+        <div class="company-name">Surgical Instrument</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="user-actions">
+            <button class="login-button">Login</button>
+            <button class="register-button">Register</button>
+            <button class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </button>
+        </div>
+
+    </header>
+      <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Featured Products</a></li>
+            <li><a href="#">Customer Request</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Blogs</a></li>
+            <li><a href="#">Account Details</a></li>
+            <li><a href="#all-products" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
+        </ul>
+        <div class="social-media-icons">
+            <a href="#" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+            <a href="#" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+            <a href="#" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+            <a href="#" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+        </div>
+    </nav>
+
+    <h1>Thank You for Your Purchase!</h1>
+    <!-- Add any additional content or messages you want to display -->
+
+<footer>
+    <div class="footer-row">
+        <div class="footer-column-1">
+            <h3>About Ali Surgical</h3>
+            <p>Ali Surgical is one of the Renowned, Privately Health Care Instrument Manufacturing Company in
+                Pakistan</p>
+            <div class="icon-row">
+                <img src="/static/images/fb.png" alt="Facebook">
+                <img src="/static/images/lk.png" alt="LinkedIn">
+                <img src="/static/images/em.png" alt="Email">
+                <img src="/static/images/yt.png" alt="Youtube">
+            </div>
+        </div>
+        <div class="footer-column-2">
+            <h3>About</h3>
+            <ul>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="dcma.html">DCMA</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-3">
+            <h3>Let Us Help You</h3>
+            <ul>
+                <li><a href="faqs.html">FAQS</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+                <li><a href="payment-methods.html">Payment Methods</a></li>
+                <li><a href="delivery-info.html">Delivery Information</a></li>
+                <li><a href="return-policy.html">Return and Refund Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-4">
+            <h3>Customer Care</h3>
+            <ul>
+                <li><a href="my-accounts.html">My Accounts</a></li>
+                <li><a href="addresses.html">Addresses</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="track-order.html">Track Your Order</a></li>
+                <li><a href="lost-password.html">Lost Password</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="centered-div">
+        <img src="/static/images/p1.png" alt="Image">
+        <div class="anchor-div">
+            <a href="about_us.html">About Us</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+        </div>
+        <p>Copyright &copy; 2023 Ali Surgical. All Rights Reserved.</p>
+        <p>This site is also protected by reCAPTCHA and the Google Privacy Policy and the Terms of Service
+            Apply.</p>
+    </div>
+
+</footer>
+
+</body>
+</html>

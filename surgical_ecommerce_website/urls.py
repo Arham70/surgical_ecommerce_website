@@ -23,9 +23,7 @@ from surgical_ecommerce_website import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('signup/', views.SignUpPage, name='signup'),
-    path('login/', views.LoginPage, name='login'),
-    path('profile_setup/', views.profile_setup, name='profile_setup'),
+    path('', include('authentication.urls')),
     path('', include('product.urls')),
     path('', include('Payment.urls')),
 ]

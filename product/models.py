@@ -27,5 +27,10 @@ class CartItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        # Calculate and save the total_amount before saving the CartItem
+        self.total_amount = self.product.price * self.quantity
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.product.name} - {self.quantity}"

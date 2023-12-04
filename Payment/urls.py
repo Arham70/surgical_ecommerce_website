@@ -1,8 +1,13 @@
 # payment/urls.py
+# Update this line in your imports
+from django.contrib import admin
+# urls.py
 from django.urls import path
-from .views import proceed_to_checkout, stripe_payment
+from .views import CheckoutPageView, charge, order_list
 
 urlpatterns = [
-    path('proceed-to-checkout/', proceed_to_checkout, name='proceed_to_checkout'),
-    path('stripe-payment/', stripe_payment, name='stripe_payment'),
+    path('checkout/', CheckoutPageView.as_view(), name='checkout'),
+    path('charge/', charge, name='charge'),
+    path('order_list/', order_list, name='order_list'),
 ]
+

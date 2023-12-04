@@ -1,27 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load custom_filters %}
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+    <title>Customer Form</title>
 </head>
-<style>
-    .checkout-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.checkout-button:hover {
-    background-color: #0056b3;
-}
-</style>
 <body>
 <header>
         <div class="logo">
@@ -91,65 +75,17 @@
           {% endif %}
     </nav>
 
-    <section id="cart" >
-        <table>
-            <thead>
-                <tr>
-                    <td>Remove</td>
-                    <td>Product</td>
-                    <td>Price</td>
-                    <td>Quantity</td>
-                    <td>Subtotal</td>
-                </tr>
-            </thead>
-            <tbody id="your-table-body-id">
-                {% for cart_item in cart_items %}
-                    <tr>
-                        <td><button class="delete-button" data-cart-item-id="{{ cart_item.id }}">Delete</button></td>
-                        <td>{{ cart_item.product.name }}</td>
-                        <td>${{ cart_item.product.price|floatformat:2 }}</td>
-                        <td>{{ cart_item.quantity }}</td>
-                        <td>${{ cart_item|calculate_subtotal|floatformat:2 }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
 
-    <section id="cart-add" >
-        <div id="coupon">
-            <h3>Apply Coupon</h3>
-            <div>
-                <input type="text" placeholder="Enter Your Coupon">
-                <button class="normal">Apply</button>
-            </div>
-        </div>
-    </section>
+    <h2>Product Request Form</h2>
+    <form method="post" action="{% url 'request_product_form' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
 
-    <div id="subtotal">
-    <h3>Cart Totals</h3>
-    <table>
-        <tr>
-            <td>Cart Subtotal</td>
-            <td>${{ total_amount|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <td>Shipping</td>
-            <td>Free</td>
-        </tr>
-        <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>${{ total_amount|floatformat:2 }}</strong></td>
-        </tr>
-    </table>
 
-    {% if total_amount > 0 %}
-        <a href="{% url 'checkout' %}" class="checkout-button">Proceed To Checkout</a>
-    {% else %}
-        <p>Your cart is empty. Add items to proceed to checkout.</p>
-    {% endif %}
-</div>
-     <section id="newsletter" class="section-p1 section-m1">
+
+<section id="newsletter" class="section-p1 section-m1">
         <div class="newstext">
             <h4>Sign Up for Newsletters</h4>
             <p>Get E-mail updates about our latest shop and <span>special offers.</span></p>
@@ -159,8 +95,8 @@
             <button class="normal">Sign Up</button>
         </div>
     </section>
-    <footer>
-    <div class="footer-row">
+<footer>
+<div class="footer-row">
         <div class="footer-column-1">
             <h3>About Ali Surgical</h3>
             <p>Ali Surgical is one of the Renowned, Privately Health Care Instrument Manufacturing Company in
@@ -218,45 +154,6 @@
 
 </footer>
 
-<script>
-    document.querySelectorAll('.delete-button').forEach(function(button) {
-        button.addEventListener('click', function() {
-            var cartItemId = this.getAttribute('data-cart-item-id');
-
-            fetch(`/remove_from_cart/${cartItemId}/`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return(
-                    response.json()
-
-
-                )
-            })
-            .then(data => {
-            console.log(data); // Log the response data
-            var row = document.querySelector(`[data-cart-item-id="${cartItemId}"]`);
-            if (row) {
-            row.parentNode.removeChild(row);
-            console.log('Row deleted successfully');
-            // recalculate_subtotal('{{ request.user.id }}');
-            console.log("before reload")
-                location.reload()
-    }
-})
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-        });
-    });
-</script>
 
 </body>
 </html>

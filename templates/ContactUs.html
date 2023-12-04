@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+</head>
+<body>
+ <header>
+        <div class="logo">
+            <img src="{% static 'images/your_logo.png' %}" alt="Your Logo">
+        </div>
+        <div class="company-name">Surgical Instrument</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search">
+            <button class="search-button">Search</button>
+        </div>
+        <div class="user-actions">
+            <button class="login-button">Login</button>
+            <button class="register-button">Register</button>
+            <button class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </button>
+        </div>
+
+    </header>
+      <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Featured Products</a></li>
+            <li><a href="#">Customer Request</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Blogs</a></li>
+            <li><a href="#">Account Details</a></li>
+            <li><a href="#all-products" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
+        </ul>
+        <div class="social-media-icons">
+            <a href="#" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
+            <a href="#" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
+            <a href="#" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
+            <a href="#" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+        </div>
+    </nav>
+
+<div class="bord">
+    <div class="H">
+    <h2>Contacts</h2>
+    </div>
+    <div class="icon-row">
+        <img src="/static/images/fb1.png" alt="Facebook">
+        <img src="/static/images/lk1.png" alt="LinkedIn">
+        <img src="/static/images/em1.png" alt="Email">
+        <img src="/static/images/yt1.png" alt="Youtube">
+    </div>
+</div>
+<div id="map" style="width: 100%; height: 400px;"></div>
+
+<div class="contact-form">
+    <div class="contact">
+        <h2>Contact Us</h2>
+        <div class="main">
+            <div class="main-1">
+                <img src="/static/images/loc.png" alt="Youtube">
+                <p>ALi Surgical</p>
+                <p>Sublime Chowk, Head Marala Road</p>
+                <p>Lahore 54000, Pakistan</p>
+            </div>
+            <div class="main-2">
+                <img src="/static/images/time.png" alt="Youtube">
+                <p>We are Open Monday-Friday</p>
+                <p>8:00Am - 5:00Pm, EST</p>
+            </div>
+        </div>
+        <div class="main1">
+            <div class="main1-1">
+                <img src="/static/images/ema.png" alt="Youtube">
+                <p>alisurgical@gmail.com</p>
+            </div>
+            <div class="main1-2">
+                <img src="/static/images/phone.png" alt="Youtube">
+                <p>+923435678345</p>
+            </div>
+        </div>
+    </div>
+    <div class="form1">
+        <h2>Ask a Question</h2>
+        <form action="process_form.php" method="post" enctype="multipart/form-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address">
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+
+            <label for="message">Your Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <label for="attachment">Choose File for Attachment:</label>
+            <input type="file" id="attachment" name="attachment">
+
+            <button type="submit" name="submit">Send Me</button>
+        </form>
+    </div>
+</div>
+
+<div class="bar">
+    <div class="heads">
+        <h2>Need More Help?</h2>
+        <p>Get in touch with us, support is provided daily!</p>
+    </div>
+    <div class="btn">
+        <button type="submit" name="submit">GET IN TOUCH</button>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<footer>
+<div class="footer-row">
+        <div class="footer-column-1">
+            <h3>About Ali Surgical</h3>
+            <p>Ali Surgical is one of the Renowned, Privately Health Care Instrument Manufacturing Company in
+                Pakistan</p>
+            <div class="icon-row">
+                <img src="/static/images/fb.png" alt="Facebook">
+                <img src="/static/images/lk.png" alt="LinkedIn">
+                <img src="/static/images/em.png" alt="Email">
+                <img src="/static/images/yt.png" alt="Youtube">
+            </div>
+        </div>
+        <div class="footer-column-2">
+            <h3>About</h3>
+            <ul>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="dcma.html">DCMA</a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-3">
+            <h3>Let Us Help You</h3>
+            <ul>
+                <li><a href="faqs.html">FAQS</a></li>
+                <li><a href="contact-us.html">Contact Us</a></li>
+                <li><a href="payment-methods.html">Payment Methods</a></li>
+                <li><a href="delivery-info.html">Delivery Information</a></li>
+                <li><a href="return-policy.html">Return and Refund Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-column-4">
+            <h3>Customer Care</h3>
+            <ul>
+                <li><a href="my-accounts.html">My Accounts</a></li>
+                <li><a href="addresses.html">Addresses</a></li>
+                <li><a href="orders.html">Orders</a></li>
+                <li><a href="track-order.html">Track Your Order</a></li>
+                <li><a href="lost-password.html">Lost Password</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="centered-div">
+        <img src="/static/images/p1.png" alt="Image">
+        <div class="anchor-div">
+            <a href="about_us.html">About Us</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+            <a href="#">FAQ</a>
+        </div>
+        <p>Copyright &copy; 2023 Ali Surgical. All Rights Reserved.</p>
+        <p>This site is also protected by reCAPTCHA and the Google Privacy Policy and the Terms of Service
+            Apply.</p>
+    </div>
+
+</footer>
+
+</body>
+</html>

@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-
-from .form import ProfileSetupForm
+from .models import RequestProductForm
+from .form import ProfileSetupForm, ProductForm
 from .models import CustomUser
 
 
@@ -36,7 +36,7 @@ def LoginPage(request):
 
         if user is not None:
             login(request, user)
-            return redirect('signup')  # Redirect to user profile or another page
+            return redirect('profile_setup')  # Redirect to user profile or another page
         else:
             return HttpResponse("Username or Password is incorrect!!")
 
@@ -50,7 +50,7 @@ def profile_setup(request):
         form = ProfileSetupForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('proceed_to_checkout')  # Redirect to the checkout page after profile setup
+            return render(request, 'index.html')  # Redirect to the checkout page after profile setup
     else:
         form = ProfileSetupForm(instance=user)
 
@@ -65,3 +65,51 @@ def UserProfile(request):
 def LogoutPage(request):
     logout(request)
     return redirect('login')
+
+
+def home(request):
+    return render(request, 'index.html')
+
+
+def ContactUs(request):
+    return render(request, 'ContactUs.html')
+
+
+def PaymentMethod(request):
+    return render(request, 'PaymentMethod.html')
+
+
+def deliveryInformation(request):
+    return render(request, 'deliveryInformation.html')
+
+
+def ReturnAndRefunds(request):
+    return render(request, 'ReturnAndRefunds.html')
+
+
+def PrivacyPolicy(request):
+    return render(request, 'PrivacyPolicy.html')
+
+
+def TermsAndConditions(request):
+    return render(request, 'TermsAndConditions.html')
+
+
+def request_product_form(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_page')  # Redirect to a success page
+    else:
+        form = ProductForm()
+
+    return render(request, 'CustomerRequest.html', {'form': form})
+
+
+def blog(request):
+    return render(request,'blog.html')
+
+
+def success_page(request):
+    return  render(request,'payment_success.html')
