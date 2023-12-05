@@ -105,7 +105,13 @@
                     </div>
                     <h4>${{ product.price }}</h4>
                 </div>
+                {% if user.is_authenticated %}
                 <button class="add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add to Cart</button>
+                {% else %}
+                <a href="{% url 'login' %}">
+                    <button>Add to Cart</button>
+                </a>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

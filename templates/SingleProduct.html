@@ -102,7 +102,13 @@
                 {% endfor %}
             </select>
             <input type="number" value="1" id="quantity" name="quantity">
-            <button class="add-to-cart add1" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add To Cart</button>
+            {% if user.is_authenticated %}
+                <button class="add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add to Cart</button>
+            {% else %}
+                <a href="{% url 'login' %}">
+                    <button>Add to Cart</button>
+                </a>
+            {% endif %}
         </form>
         <h4>Product Details</h4>
         <span>{{ product.description }}</span>
