@@ -75,6 +75,14 @@ def ContactUs(request):
     return render(request, 'ContactUs.html')
 
 
+def AboutUs(request):
+    return render(request, 'About_us.html')
+
+
+def FAQS(request):
+    return render(request, 'Faqs.html')
+
+
 def PaymentMethod(request):
     return render(request, 'PaymentMethod.html')
 

@@ -1,4 +1,5 @@
 import stripe
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -78,6 +79,7 @@ def charge(request):
             return redirect('checkout')
 
 
+@login_required
 def order_list(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'order_list.html', {'orders': orders})

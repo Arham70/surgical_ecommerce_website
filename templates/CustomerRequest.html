@@ -3,13 +3,16 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <title>Customer Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+    <title>Surgical Website</title>
 </head>
 <body>
 <header>
         <div class="logo">
-            <img src="{% static 'images/your_logo.png' %}" alt="Your Logo">
+            <img src="/static/images/Logo.png " alt="Your Logo">
         </div>
         <div class="company-name">Surgical Instrument</div>
         <div class="search-bar">
@@ -23,8 +26,7 @@
         </a>
         <a href="{% url 'view_cart' %}">
             <button class="cart-button">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count">0</span>
+                Cart Items
             </button>
         </a>
     {% else %}
@@ -51,10 +53,10 @@
                 <li><a href="{% url 'featured_products' %}" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
             </ul>
             <div class="social-media-icons">
-                <a href="www.facebook.com" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
-                <a href="www.instragram.com" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
-                <a href="www.linkedin.com" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
-                <a href="www.youtube.com" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+                <a href="www.facebook.com" class="social-icon"><img src="/static/images/Fb.png" alt="Facebook"></a>
+                <a href="www.instragram.com" class="social-icon"><img src="/static/images/Ist.png" alt="Instagram"></a>
+                <a href="www.linkedin.com" class="social-icon"><img src="/static/images/Lk.png" alt="LinkedIn"></a>
+                <a href="www.youtube.com" class="social-icon"><img src="/static/images/icons8-youtube-48.png" alt="YouTube"></a>
             </div>
           {% else %}
             <ul class="nav-list">
@@ -67,22 +69,24 @@
                 <li><a href="{% url 'featured_products' %}">All Products</a></li>
             </ul>
             <div class="social-media-icons">
-                <a href="www.facebook.com" class="social-icon"><img src="path/to/facebook-icon.png" alt="Facebook"></a>
-                <a href="www.instragram.com" class="social-icon"><img src="path/to/instagram-icon.png" alt="Instagram"></a>
-                <a href="www.linkedin.com" class="social-icon"><img src="path/to/linkedin-icon.png" alt="LinkedIn"></a>
-                <a href="www.youtube.com" class="social-icon"><img src="path/to/youtube-icon.png" alt="YouTube"></a>
+                <a href="www.facebook.com" class="social-icon"><img src="/static/images/Fb.png" alt="Facebook"></a>
+                <a href="www.instragram.com" class="social-icon"><img src="/static/images/Ist.png" alt="Instagram"></a>
+                <a href="www.linkedin.com" class="social-icon"><img src="/static/images/Lk.png" alt="LinkedIn"></a>
+                <a href="www.youtube.com" class="social-icon"><img src="/static/images/icons8-youtube-48.png" alt="YouTube"></a>
             </div>
           {% endif %}
     </nav>
 
-
+<div class="form1">
     <h2>Product Request Form</h2>
+    <div class="form2">
     <form method="post" action="{% url 'request_product_form' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>
-
+    </div>
+</div>
 
 
 <section id="newsletter" class="section-p1 section-m1">
@@ -95,57 +99,58 @@
             <button class="normal">Sign Up</button>
         </div>
     </section>
-<footer>
-<div class="footer-row">
+
+    <footer>
+    <div class="footer-row">
         <div class="footer-column-1">
             <h3>About Ali Surgical</h3>
             <p>Ali Surgical is one of the Renowned, Privately Health Care Instrument Manufacturing Company in
                 Pakistan</p>
             <div class="icon-row">
-                <img src="/static/images/fb.png" alt="Facebook">
-                <img src="/static/images/lk.png" alt="LinkedIn">
-                <img src="/static/images/em.png" alt="Email">
-                <img src="/static/images/yt.png" alt="Youtube">
+                <img src="/static/images/Fb.png" alt="Facebook">
+                <img src="/static/images/Lk.png" alt="LinkedIn">
+                <img src="/static/images/Ist.png" alt="Email">
+                <img src="/static/images/icons8-youtube-48.png" alt="Youtube">
             </div>
         </div>
         <div class="footer-column-2">
             <h3>About</h3>
             <ul>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="dcma.html">DCMA</a></li>
-                <li><a href="about-us.html">About Us</a></li>
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                <li><a href="{% url 'blog' %}">Blog</a></li>
+                <li><a href="#">DCMA</a></li>
+                <li><a href="{% url 'About_us' %}">About Us</a></li>
+                <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                <li><a href="{% url 'term_conditions' %}">Terms & Conditions</a></li>
             </ul>
         </div>
         <div class="footer-column-3">
             <h3>Let Us Help You</h3>
             <ul>
-                <li><a href="faqs.html">FAQS</a></li>
-                <li><a href="contact-us.html">Contact Us</a></li>
-                <li><a href="payment-methods.html">Payment Methods</a></li>
-                <li><a href="delivery-info.html">Delivery Information</a></li>
-                <li><a href="return-policy.html">Return and Refund Policy</a></li>
+                <li><a href="{% url 'faqs' %}">FAQS</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                <li><a href="{% url 'payment_method' %}">Payment Methods</a></li>
+                <li><a href="{% url 'delivery_Information' %}">Delivery Information</a></li>
+                <li><a href="{% url 'return_refunds' %}">Return and Refund Policy</a></li>
             </ul>
         </div>
         <div class="footer-column-4">
             <h3>Customer Care</h3>
             <ul>
-                <li><a href="my-accounts.html">My Accounts</a></li>
-                <li><a href="addresses.html">Addresses</a></li>
-                <li><a href="orders.html">Orders</a></li>
-                <li><a href="track-order.html">Track Your Order</a></li>
-                <li><a href="lost-password.html">Lost Password</a></li>
+                <li><a href="{% url 'signup' %}">My Accounts</a></li>
+                <li><a href="{% url 'contact_us' %}">Addresses</a></li>
+                <li><a href="{% url 'order_list' %}">Orders</a></li>
+                <li><a href="{% url 'return_refunds' %}">Track Your Order</a></li>
+                <li><a href="{% url 'login' %}">Lost Password</a></li>
             </ul>
         </div>
     </div>
     <div class="centered-div">
         <img src="/static/images/p1.png" alt="Image">
         <div class="anchor-div">
-            <a href="about_us.html">About Us</a>
-            <a href="#">Blog</a>
-            <a href="#">Contact</a>
-            <a href="#">FAQ</a>
+            <a href="{% url 'About_us' %}">About Us</a>
+            <a href="{% url 'blog' %}">Blog</a>
+            <a href="{% url 'contact_us' %}">Contact</a>
+            <a href="{% url 'faqs' %}">FAQ</a>
         </div>
         <p>Copyright &copy; 2023 Ali Surgical. All Rights Reserved.</p>
         <p>This site is also protected by reCAPTCHA and the Google Privacy Policy and the Terms of Service

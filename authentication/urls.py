@@ -17,5 +17,7 @@ urlpatterns = [
     path('term_conditions/', TermsAndConditions, name='term_conditions'),
     path('return_refunds/', ReturnAndRefunds, name='return_refunds'),
     path('success/', success_page, name='success_page'),
+    path('About_us/', AboutUs, name='About_us'),
+    path('faqs/', FAQS, name='faqs')
 
 ]

@@ -50,6 +50,8 @@ def remove_from_cart(request, cart_item_id):
     # Return a success response
     return JsonResponse({'success': True})
 
+
+@login_required
 def view_cart(request):
     cart_items = CartItem.objects.filter(user=request.user)
     total_amount = sum(item.product.price * item.quantity for item in cart_items)
@@ -62,14 +64,8 @@ def empty_cart_view(request):
 
 @login_required
 def get_cart_count(request):
-    # Retrieve the current user's cart items
     cart_items = CartItem.objects.filter(user=request.user)
+    total_cart_items = sum(item.quantity for item in cart_items)
 
-    # Calculate the total count of items in the cart
-    cart_count = cart_items.count()
-
-    # Pass the cart count to the template context
-    context = {'cart_count': cart_count}
-
-    # Return the context as JSON
-    return JsonResponse(context)
+    # Render the template with the cart count
+    return render(request, 'SingleProduct.html', {'total_cart_items': total_cart_items})
