@@ -1,0 +1,13 @@
+{
+   "builds": [{
+     "src": "surgical_ecommerce_website/wsgi.py",
+     "use": "@vercel/python",
+     "config": { "maxLamdaSize": "15mb", "runtime": "python3.12.0"}
+   }],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "surgical_ecommerce_website/wsgi.py"
+    }
+  ]
+}
