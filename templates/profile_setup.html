@@ -177,7 +177,6 @@ label {
 input, select {
     width: 100%;
     padding: 8px;
-    margin-bottom: 10px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -407,7 +406,7 @@ footer {
         <a href="{% url 'logout' %}">
             <button class="logout-button">Logout</button>
         </a>
-        <a href="{% url 'view_cart' %}">
+        <a href="{% url 'profile_setup' %}">
             <button class="cart-button">
                 Cart Items
             </button>
@@ -426,14 +425,14 @@ footer {
       <nav class="navbar">
           {% if user.is_authenticated %}
             <ul class="nav-list">
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'featured_products' %}">Featured Products</a></li>
-                <li><a href="{% url 'request_product_form' %}">Customer Request</a></li>
-                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
-                <li><a href="{% url 'blog' %}">Blogs</a></li>
-                <li><a href="{% url 'charge' %}">Account Details</a></li>
-                <li><a href="{% url 'order_list' %}">My Order</a></li>
-                <li><a href="{% url 'featured_products' %}" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
+                <li><a href="{% url 'profile_setup' %}">Home</a></li>
+                <li><a href="{% url 'profile_setup' %}">Featured Products</a></li>
+                <li><a href="{% url 'profile_setup' %}">Customer Request</a></li>
+                <li><a href="{% url 'profile_setup' %}">Contact Us</a></li>
+                <li><a href="{% url 'profile_setup' %}">Blogs</a></li>
+                <li><a href="{% url 'profile_setup' %}">Account Details</a></li>
+                <li><a href="{% url 'profile_setup' %}">My Order</a></li>
+                <li><a href="{% url 'profile_setup' %}" id="all-products-link" ondrop="drop(event)" ondragover="allowDrop(event)">All Products</a></li>
             </ul>
             <div class="social-media-icons">
                 <a href="www.facebook.com" class="social-icon"><img src="/static/images/Fb.png" alt="Facebook"></a>
@@ -492,41 +491,41 @@ footer {
         <div class="footer-column-2">
             <h3>About</h3>
             <ul>
-                <li><a href="{% url 'blog' %}">Blog</a></li>
-                <li><a href="#">DCMA</a></li>
-                <li><a href="{% url 'About_us' %}">About Us</a></li>
-                <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
-                <li><a href="{% url 'term_conditions' %}">Terms & Conditions</a></li>
+                <li><a href="{% url 'profile_setup' %}">Blog</a></li>
+                <li><a href="{% url 'profile_setup' %}">DCMA</a></li>
+                <li><a href="{% url 'profile_setup' %}">About Us</a></li>
+                <li><a href="{% url 'profile_setup' %}">Privacy Policy</a></li>
+                <li><a href="{% url 'profile_setup' %}">Terms & Conditions</a></li>
             </ul>
         </div>
         <div class="footer-column-3">
             <h3>Let Us Help You</h3>
             <ul>
-                <li><a href="{% url 'faqs' %}">FAQS</a></li>
-                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
-                <li><a href="{% url 'payment_method' %}">Payment Methods</a></li>
-                <li><a href="{% url 'delivery_Information' %}">Delivery Information</a></li>
-                <li><a href="{% url 'return_refunds' %}">Return and Refund Policy</a></li>
+                <li><a href="{% url 'profile_setup' %}">FAQS</a></li>
+                <li><a href="{% url 'profile_setup' %}">Contact Us</a></li>
+                <li><a href="{% url 'profile_setup' %}">Payment Methods</a></li>
+                <li><a href="{% url 'profile_setup' %}">Delivery Information</a></li>
+                <li><a href="{% url 'profile_setup' %}">Return and Refund Policy</a></li>
             </ul>
         </div>
         <div class="footer-column-4">
             <h3>Customer Care</h3>
             <ul>
-                <li><a href="{% url 'signup' %}">My Accounts</a></li>
-                <li><a href="{% url 'contact_us' %}">Addresses</a></li>
-                <li><a href="{% url 'order_list' %}">Orders</a></li>
-                <li><a href="{% url 'return_refunds' %}">Track Your Order</a></li>
-                <li><a href="{% url 'login' %}">Lost Password</a></li>
+                <li><a href="{% url 'profile_setup' %}">My Accounts</a></li>
+                <li><a href="{% url 'profile_setup' %}">Addresses</a></li>
+                <li><a href="{% url 'profile_setup' %}">Orders</a></li>
+                <li><a href="{% url 'profile_setup' %}">Track Your Order</a></li>
+                <li><a href="{% url 'profile_setup' %}">Lost Password</a></li>
             </ul>
         </div>
     </div>
     <div class="centered-div">
         <img src="/static/images/p1.png" alt="Image">
         <div class="anchor-div">
-            <a href="{% url 'About_us' %}">About Us</a>
-            <a href="{% url 'blog' %}">Blog</a>
-            <a href="{% url 'contact_us' %}">Contact</a>
-            <a href="{% url 'faqs' %}">FAQ</a>
+            <a href="{% url 'profile_setup' %}">About Us</a>
+            <a href="{% url 'profile_setup' %}">Blog</a>
+            <a href="{% url 'profile_setup' %}">Contact</a>
+            <a href="{% url 'profile_setup' %}">FAQ</a>
         </div>
         <p>Copyright &copy; 2023 Ali Surgical. All Rights Reserved.</p>
         <p>This site is also protected by reCAPTCHA and the Google Privacy Policy and the Terms of Service
