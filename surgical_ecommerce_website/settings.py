@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import os
+import django_heroku
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -120,9 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -134,3 +136,9 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_51OIQ9qKbFgjv6nDD90oaCUnoZtnJtido7wvm5Wje9xwfxHtsFoPVaZul8uKHK0Y6V3RpQamWI3cD6o66X7neIqH400TRqsnHHK'
 STRIPE_SECRET_KEY = 'sk_test_51OIQ9qKbFgjv6nDDqAa2yUY42xtcofWmf05Xw9eEL98E4jfAOdRRFKXxlVZtJwDEDxnSN5SMHHjAmYr2QuJMjkwm00GXVsAG5B'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+django_heroku.settings(locals())
+
