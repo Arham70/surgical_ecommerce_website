@@ -1,1 +1,1 @@
-web: gunicorn surgical_ecommerce_website.wsgi
+web: gunicorn surgical_ecommerce_website.wsgi --log-file-

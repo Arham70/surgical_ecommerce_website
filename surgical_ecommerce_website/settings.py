@@ -138,7 +138,7 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_51OIQ9qKbFgjv6nDD90oaCUnoZtnJtido7wvm5Wje9xwfx
 STRIPE_SECRET_KEY = 'sk_test_51OIQ9qKbFgjv6nDDqAa2yUY42xtcofWmf05Xw9eEL98E4jfAOdRRFKXxlVZtJwDEDxnSN5SMHHjAmYr2QuJMjkwm00GXVsAG5B'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 django_heroku.settings(locals())
 
