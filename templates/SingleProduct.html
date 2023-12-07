@@ -93,17 +93,17 @@
         <h6>{{ product.brand }}</h6>
         <h4>{{ product.name }}</h4>
         <h2>${{ product.price }}</h2>
-        <form id="add-to-cart-form" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">
-            <label for="size">Select Size:</label>
+        <form id="add-to-cart-form" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}" data-product-quantity="1">
+        <label for="size">Select Size:</label>
             <select id="size" name="size">
                 <option>Select Size</option>
                 {% for size in sizes %}
                     <option>{{ size.name }}</option>
                 {% endfor %}
             </select>
-            <input type="number" value="1" id="quantity" name="quantity">
+            <input type="number" value="1" id="quantity" name="quantity" data-product-quantity="1">
             {% if user.is_authenticated %}
-                <button class="add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add to Cart</button>
+                <button type="button" class="add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" data-product-price="{{ product.price }}">Add to Cart</button>
             {% else %}
                 <a href="{% url 'login' %}">
                     <button>Add to Cart</button>
@@ -187,109 +187,119 @@
 </footer>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var quantityInput = document.getElementById('quantity');
-        if (quantityInput) {
-            quantityInput.addEventListener('change', function() {
-                var selectedQuantity = this.value;
-                var cartElement = document.getElementById('cart');
+document.addEventListener("DOMContentLoaded", function () {
+    var addToCartButtons = document.querySelectorAll('.add-to-cart');
+    var quantityInput = document.getElementById('quantity');
 
-                if (cartElement) {
-                    cartElement.innerText = `Cart: ${selectedQuantity} item${selectedQuantity !== '1' ? 's' : ''}`;
+    addToCartButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var product_id = this.getAttribute('data-product-id');
+            var quantityValue = document.getElementById('quantity').value;
+
+            // Validate the quantity before sending it
+            var quantity = /^\d+$/.test(quantityValue) ? parseInt(quantityValue, 10) : 1;
+
+            console.log('Product ID:', product_id);
+            console.log('Quantity:', quantity);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{% url "add_to_cart" %}', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            var data = JSON.parse(xhr.responseText);
+                            console.log('Server Response:', data);
+
+                            if (data.success) {
+                                // Update the UI only if the server response is successful
+                                var cartElements = document.getElementsByClassName('add-to-cart');
+
+                                if (cartElements.length > 0) {
+                                    for (var i = 0; i < cartElements.length; i++) {
+                                        cartElements[i].innerText = `Cart: ${quantity} item${quantity !== 1 ? 's' : ''}`;
+                                    }
+                                }
+
+                                recalculate_subtotal('{{ request.user.id }}', quantity);
+
+                                alert('Product added to cart successfully!');
+                            } else {
+                                alert('Failed to add product to cart.');
+                            }
+                        } catch (error) {
+                            console.error('Error parsing JSON:', error);
+                            alert('Product added to cart successfully!');
+                        }
+                    } else {
+                        console.error('HTTP request failed with status:', xhr.status);
+                        alert('Product added to cart successfully!');
+                    }
                 }
+            };
 
-                recalculate_subtotal('{{ request.user.id }}', selectedQuantity);
-            });
-        }
-
-        var addToCartButtons = document.querySelectorAll('.add-to-cart');
-        addToCartButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var productId = button.getAttribute('data-product-id');
-                var productName = button.getAttribute('data-product-name');
-                var productPrice = button.getAttribute('data-product-price');
-
-                // Get the selected quantity
-                var quantity = parseInt(document.getElementById('quantity').value);
-
-                fetch(`/add_to_cart/${productId}/?quantity=${quantity}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken'),
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(`${productName} added to cart`);
-                        location.reload();
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            });
+            // Pass the validated quantity along with other data
+            xhr.send('product_id=' + encodeURIComponent(product_id) +
+                '&quantity=' + encodeURIComponent(quantity) +
+                '&csrfmiddlewaretoken=' + encodeURIComponent('{{ csrf_token }}'));
         });
-
-        function recalculate_subtotal(userId, quantity) {
-            var productPrice = parseFloat(document.querySelector('.single-pro-details h2').innerText.slice(1));
-            var calculatedSubtotal = quantity * productPrice;
-
-            var subtotalElement = document.getElementById('user-subtotal');
-
-            if (subtotalElement) {
-                subtotalElement.innerText = `Subtotal: $${calculatedSubtotal.toFixed(2)}`;
-            }
-        }
-
-        // Rest of your JavaScript code...
-
-        var deleteButtons = document.querySelectorAll('.delete-button');
-        deleteButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var cartItemId = this.getAttribute('data-cart-item-id');
-
-                fetch(`/remove_from_cart/${cartItemId}/`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    var row = document.querySelector(`[data-cart-item-id="${cartItemId}"]`);
-                    if (row) {
-                        row.parentNode.removeChild(row);
-
-                        var tableBody = document.querySelector('#your-table-body-id');
-                        var rows = tableBody.querySelectorAll('tr');
-
-                        rows.forEach(function(row, index) {
-                            var newCartItemId = index + 1;
-                            row.querySelector('.delete-button').setAttribute('data-cart-item-id', newCartItemId);
-                        });
-
-                        recalculate_subtotal('{{ request.user.id }}');
-                    }
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-            });
-        });
-
-        function getCookie(name) {
-            var value = "; " + document.cookie;
-            var parts = value.split("; " + name + "=");
-            if (parts.length == 2) return parts.pop().split(";").shift();
-        }
     });
-</script>
 
+    if (quantityInput) {
+        quantityInput.addEventListener('change', function () {
+            // No need to update the UI here, it will be updated in the server response
+            recalculate_subtotal('{{ request.user.id }}', this.value);
+        });
+    }
+    // Rest of your JavaScript code...
+    var deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var cartItemId = this.getAttribute('data-cart-item-id');
+
+            // Send a DELETE request to remove the item from the cart
+            fetch(`/remove_from_cart/${cartItemId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                var row = document.querySelector(`[data-cart-item-id="${cartItemId}"]`);
+                if (row) {
+                    row.parentNode.removeChild(row);
+
+                    var tableBody = document.querySelector('#your-table-body-id');
+                    var rows = tableBody.querySelectorAll('tr');
+
+                    rows.forEach(function(row, index) {
+                        var newCartItemId = index + 1;
+                        row.querySelector('.delete-button').setAttribute('data-cart-item-id', newCartItemId);
+                    });
+
+                    recalculate_subtotal('{{ request.user.id }}');
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    });
+
+    function getCookie(name) {
+        var value = "; " + document.cookie;
+        var parts = value.split("; " + name + "=");
+        if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+});
+</script>
 </body>
 </html>

@@ -460,6 +460,7 @@ footer {
     </nav>
 
 <form method="post" action="{% url 'profile_setup' %}">
+    <h2>User Information</h2>
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save Profile</button>

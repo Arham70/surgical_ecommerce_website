@@ -1,6 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import Product, CartItem, Size
 from .utils import recalculate_subtotal  # Assuming you've created a utils.py file
 
@@ -13,29 +16,38 @@ def product_detail(request, product_id):
     sizes = Size.objects.all()
     return render(request, 'SingleProduct.html', {'product': product, 'sizes': sizes})
 
+
+@csrf_exempt
 @login_required
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
+def add_to_cart(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        product_id = request.POST.get('product_id')
+        quantity = request.POST.get('quantity', 1)
 
-    quantity = int(request.GET.get('quantity', 1))  # Get the quantity from the request, default to 1 if not provided
+        product = get_object_or_404(Product, id=product_id)
 
-    # Check if the product is already in the cart
-    cart_item, created = CartItem.objects.get_or_create(product=product, user=request.user)
+        # Check if the product is already in the cart
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,
+            product=product
+        )
 
-    if not created:
-        # If the item already exists in the cart, update the quantity
-        cart_item.quantity += quantity
-    else:
-        # If the item is newly added, set the quantity
-        cart_item.quantity = quantity
+        # If the cart item already exists, increment the quantity by 1
+        if not created:
+            cart_item.quantity += 1
+        else:
+            # If the cart item is newly created, set the quantity to the provided value
+            cart_item.quantity = quantity
 
-    # Calculate and set the total_amount when a new item is added or quantity is increased
-    cart_item.total_amount = cart_item.product.price * cart_item.quantity
+        # Save the cart item after updating the quantity
+        cart_item.save()
 
-    cart_item.save()
+        # Recalculate subtotal in utils.py (you need to implement this)
+        recalculate_subtotal(request.user)
 
-    return JsonResponse({'success': True})
+        return JsonResponse({'success': True})
 
+    return JsonResponse({'success': False})
 
 @login_required
 def remove_from_cart(request, cart_item_id):

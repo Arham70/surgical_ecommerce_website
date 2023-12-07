@@ -30,6 +30,9 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
     # Set custom related_name for groups and user_permissions
     groups = models.ManyToManyField(
         'auth.Group',

@@ -1,44 +1,52 @@
 # myapp/views.py
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import PasswordResetView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from pyexpat.errors import messages
+
 from .models import RequestProductForm
-from .form import ProfileSetupForm, ProductForm
+from .form import ProfileSetupForm, ProductForm, PasswordResetRequestForm
 from .models import CustomUser
 
 
 def SignUpPage(request):
     if request.method == 'POST':
-        uname = request.POST.get('username')
-        email = request.POST.get('email')
-        pass1 = request.POST.get('password1')
-        pass2 = request.POST.get('password2')
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
 
-        if pass1 != pass2:
-            return HttpResponse("Your Password and confirm password do not match!!")
+        if password == confirm_password:
+            # Check if the email already exists
+            if CustomUser.objects.filter(email=email).exists():
+                return render(request, 'signup.html', {'error': 'Email already exists'})
+
+            # Create the user
+            user = CustomUser.objects.create_user(username=username, email=email, password=password)
+             # Log the user in after successful registration
+            return redirect('login')  # Redirect to the home page or any desired URL
         else:
-            # Create a user without the additional attributes
-            my_user = CustomUser.objects.create_user(username=uname, email=email, password=pass1)
-            my_user.save()
-
-            # Redirect to profile setup page with user ID in the URL
-            return redirect('login')
+            # Handle password mismatch error
+            return render(request, 'signup.html', {'error': 'Passwords do not match'})
 
     return render(request, 'signup.html')
 
 
 def LoginPage(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('profile_setup')  # Redirect to user profile or another page
+            return redirect('profile_setup')  # Redirect to the home page or any desired URL
         else:
-            return HttpResponse("Username or Password is incorrect!!")
+            # Handle login failure
+            return render(request, 'login.html', {'error': 'Invalid login credentials'})
 
     return render(request, 'login.html')
 

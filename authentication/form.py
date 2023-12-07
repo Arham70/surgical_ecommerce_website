@@ -14,3 +14,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = RequestProductForm
         fields = ['name', 'email', 'phoneNo', 'address', 'companyName', 'productName', 'detail']
+
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(label='Email')
