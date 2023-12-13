@@ -3,18 +3,41 @@ from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
-from .models import Product, CartItem, Size
+import product
+from .form import ReviewForm
+from .models import Product, CartItem, Size, Review
 from .utils import recalculate_subtotal  # Assuming you've created a utils.py file
 
 def featured_products(request):
     products = Product.objects.all()
     return render(request, 'products.html', {'products': products})
 
+
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     sizes = Size.objects.all()
-    return render(request, 'SingleProduct.html', {'product': product, 'sizes': sizes})
+    reviews = Review.objects.all()
+
+    stars_range = range(1, 6)
+
+    return render(request, 'SingleProduct.html', {'product': product, 'sizes': sizes, 'reviews': reviews, 'stars_range': stars_range})
+
+
+def create_review(request, prod_id):
+    product = get_object_or_404(Product, id=prod_id)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = product
+            review.save()
+            return render(request, 'SingleProduct.html')   # Redirect to a success page or product detail page
+
+    return render(request, 'SingleProduct.html', {'form': ReviewForm()})
 
 
 @csrf_exempt

@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/release/v5.10.0/css/all.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <title>{{ product.name }}</title>
 </head>
 <body>
@@ -113,6 +114,63 @@
         <h4>Product Details</h4>
         <span>{{ product.description }}</span>
     </div>
+</div>
+
+<h4>Product Reviews</h4>
+<div class="review-list">
+   {% for review in reviews %}
+    <div class="review-item">
+        <strong>{{ review.user.username }}</strong> - {{ review.comment }} -
+        {% for i in stars_range %}
+            {% if i <= review.rating %}
+                <i class="fa fa-star"></i>
+            {% else %}
+                <i class="fa fa-star-o"></i>
+            {% endif %}
+        {% endfor %}
+        <span class="review-date">{{ review.created_at|date:"F j, Y" }}</span>
+    </div>
+{% endfor %}
+</div>
+
+
+<div class="review-form-container">
+    <h4>Write a Review</h4>
+<form id="review-form" method="POST" action="{% url 'create-review' product.id %}">
+    {% csrf_token %}
+    <input type="hidden" name="prod_id" value="{{ product.id }}">
+        <div class="product-ratings">
+            <label for="star-1" class="label">
+                <i class="fa fa-star"></i>
+            </label>
+            <input class="input" type="radio" id="star-1" name="rating" value="1" checked>
+             <label for="star-2" class="label">
+                <i class="fa fa-star"></i>
+            </label>
+            <input class="input" type="radio" id="star-2" name="rating" value="2" >
+             <label for="star-3" class="label">
+                <i class="fa fa-star"></i>
+            </label>
+            <input class="input" type="radio" id="star-3" name="rating" value="3" >
+             <label for="star-4" class="label">
+                <i class="fa fa-star"></i>
+            </label>
+            <input class="input" type="radio" id="star-4" name="rating" value="4" >
+             <label for="star-5" class="label">
+                <i class="fa fa-star"></i>
+            </label>
+            <input class="input" type="radio" id="star-5" name="rating" value="5" >
+        </div>
+
+        <div class="form-group">
+            <div class="text">Your review <sup class="required">*</sup> </div>
+            <textarea name="comment" id="comment" cols="20" rows="4" aria-required="true"></textarea>
+        </div>
+
+        <div class="form-group">
+        <button type="submit" class="btn">Send Your Review</button>
+        </div>
+    </form>
 </div>
 
 
@@ -300,6 +358,27 @@ document.addEventListener("DOMContentLoaded", function () {
         if (parts.length == 2) return parts.pop().split(";").shift();
     }
 });
+</script>
+<script>
+    // JavaScript to handle star rating interaction
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.fa-star');
+
+        stars.forEach((star) => {
+            star.addEventListener('click', (e) => {
+                const selectedRating = e.target.getAttribute('data-rating');
+                document.getElementById(`star-${selectedRating}`).checked = true;
+
+                stars.forEach((s) => {
+                    s.classList.remove('checked');
+                });
+
+                for (let i = 1; i <= selectedRating; i++) {
+                    document.querySelector(`#star-${i} ~ .fa-star`).classList.add('checked');
+                }
+            });
+        });
+    });
 </script>
 </body>
 </html>

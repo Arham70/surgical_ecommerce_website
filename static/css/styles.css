@@ -762,7 +762,7 @@ background-color: #0056b3;
 }
 .bar {
 padding: 20px;
-background-color: gray;
+background-color: rosybrown;
 color : white;
 border: 1px solid #ccc;
 border-radius: 5px;
@@ -1025,3 +1025,83 @@ footer {
 .centered-div p {
  text-align: center;
 }
+
+/*review css*/
+.review-list {
+    list-style: none;
+    padding: 0;
+}
+
+.review-item {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.review-item strong {
+    font-weight: bold;
+    color: #333;
+}
+
+.review-date {
+    font-style: italic;
+    color: #888;
+}
+/* Review form styles */
+.review-form-container {
+        max-width: 400px; /* Adjust the max-width as needed */
+        margin-bottom: 70px;
+    }
+
+    .product-ratings {
+        margin-bottom: 10px;
+    }
+
+    .label {
+        cursor: pointer;
+        padding: 0 0.1em;
+        font-size: 2rem;
+    }
+
+    .input {
+        display: none; /* Hide the radio inputs */
+    }
+
+    .fa-star {
+        color: orange /* Default star color */ /* Adjust the font size as needed */
+    }
+    .input:checked ~ .label .fa-star{
+        color: #ddd;
+    }
+
+    .rating-group:hover .label .fa-star{
+        color: orange;
+    }
+
+    .input:hover ~.label .fa-star{
+        color: #ddd;
+    }
+    .fa-star.checked {
+        color: gold; /* Color for selected stars */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .text {
+        margin-bottom: 5px;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .form-group .btn {
+        background-color: #007bff; /* Button color */
+        color: #fff; /* Text color */
+        padding: 10px 20px;
+        cursor: pointer;
+    }
