@@ -1,0 +1,54 @@
+name: Random Daily Commit
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # Runs once every day at midnight UTC
+  workflow_dispatch:       # Allow manual trigger
+
+jobs:
+  random-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Generate random commits
+        run: |
+          COMMITS=$(( (RANDOM % 3) + 1 ))   # 1 to 3 commits per day
+          echo "Will make $COMMITS commit(s) today."
+
+          # Possible commit messages
+          MESSAGES=("update project logs"
+                    "refactor minor section"
+                    "improve documentation"
+                    "update configuration"
+                    "tweak code style"
+                    "optimize script"
+                    "adjust formatting"
+                    "sync changes"
+                    "minor maintenance update"
+                    "clean up comments")
+
+          for ((i=1; i<=COMMITS; i++))
+          do
+            MSG=${MESSAGES[$RANDOM % ${#MESSAGES[@]}]}   # Random message
+            echo "$(date '+%Y-%m-%d %H:%M:%S') - $MSG" >> activity-log.txt
+
+            git add activity-log.txt
+            git commit -m "$MSG on $(date '+%Y-%m-%d %H:%M:%S')"
+
+            git push
+
+            # Random sleep between commits (15–120 minutes)
+            SLEEP_TIME=$(( (RANDOM % 6300) + 900 ))
+            echo "Sleeping for $SLEEP_TIME seconds (~$((SLEEP_TIME/60)) minutes)..."
+            sleep $SLEEP_TIME
+          done
